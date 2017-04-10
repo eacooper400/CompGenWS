@@ -10,11 +10,11 @@ output=args[2]
 
 sampleVCF <- my.read.vcf(file=input, comment.char="", header=TRUE, stringsAsFactors=FALSE)
 
-f.column=grep("FORMAT", header)
+f.column=grep("FORMAT", colnames(sampleVCF))
 gen.start=f.column + 1
-gen.end=length(header)
-pop1.index = grep("^FU_", header[gen.start:gen.end])
-pop2.index = grep("^MA_", header[gen.start:gen.end])
+gen.end=length(colnames(sampleVCF))
+pop1.index = grep("^FU_", colnames(sampleVCF)[gen.start:gen.end])
+pop2.index = grep("^MA_", colnames(sampleVCF)[gen.start:gen.end])
 
 fst.results <- data.frame()
 
