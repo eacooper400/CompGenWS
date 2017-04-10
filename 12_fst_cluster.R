@@ -16,12 +16,13 @@ gen.end=length(colnames(sampleVCF))
 pop1.index = grep("^FU_", colnames(sampleVCF)[gen.start:gen.end])
 pop2.index = grep("^MA_", colnames(sampleVCF)[gen.start:gen.end])
 
-fst.results <- data.frame()
-
+fst.results <- data.frame(sampleVCF$CHROM, sampleVCF$POS, rep(0, nrow(sampleVCF)), rep(0, nrow(sampleVCF)), rep(0, nrow(sampleVCF)), rep(0, nrow(sampleVCF)))
+colnames(fst.results) <- c("CHR", "POS", "Het_T", "Het_FU", "Het_MA", "FST")
+                                                                                                              
 for (i in 1:nrow(sampleVCF)) {
     vcf.row <- as.vector(sampleVCF[i,], mode="character")
     my.genotypes <- get.genotypes(vcf.row=vcf.row, start=gen.start, end=gen.end, format=vcf.row[f.column])
-    ht <- get.Hexp(my.genotypes)
+    ht = get.Hexp(my.genotypes)
     hexp1 <- get.Hexp(my.genotypes[pop1.index])
     hexp2 <- get.Hexp(my.genotypes[pop2.index])
     N <- sum(count.genotypes(my.genotypes)) 
@@ -29,10 +30,11 @@ for (i in 1:nrow(sampleVCF)) {
     n2 <- length(grep("0|1", my.genotypes[pop2.index])) 
     hs <- ((n1/N) * hexp1) + ((n2/N) * hexp2)
     fst <- (ht - hs)/ht
-    fst.results = rbind(fst.results, c(vcf.row[1], vcf.row[2], ht, hexp1, hexp2, fst))
+    fst.results$Het_T = ht
+    fst.results$Het_FU = hexp1
+    fst.results$Het_MA = hexp2
+    fst.results$FST = fst
 }
-
-colnames(fst.results) <- c("CHR", "POS", "Het_T", "Het_FU", "Het_MA", "FST")
 
 ### Create a chromosome plot to look at the spatial distribution of Fst along the chromosome
 pdf(file=output, width=8.5, height=11)

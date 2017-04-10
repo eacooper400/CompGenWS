@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -N Fst
-#PBS -l select=1:ncpus=8:mem=11gb,walltime=0:30:00
+#PBS -l select=1:ncpus=1:mem=11gb,walltime=0:30:00
 #PBS -j oe
 
 echo "START ------------------------------"
