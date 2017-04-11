@@ -1,8 +1,7 @@
 ### Week 12: Scaling Up; Part Two
 ### Fst Re-visited
 
-setwd("/home/ecoope4/CompGenWS/")
-source("LC_functions.R")
+source("/home/ecoope4/CompGenWS/LC_functions.R")
 
 args=commandArgs(trailingOnly = TRUE)
 input=args[1]
@@ -30,25 +29,28 @@ for (i in 1:nrow(sampleVCF)) {
     n2 <- length(grep("0|1", my.genotypes[pop2.index])) 
     hs <- ((n1/N) * hexp1) + ((n2/N) * hexp2)
     fst <- (ht - hs)/ht
-    fst.results$Het_T = ht
-    fst.results$Het_FU = hexp1
-    fst.results$Het_MA = hexp2
-    fst.results$FST = fst
+    fst.results$Het_T[i] = ht
+    fst.results$Het_FU[i] = hexp1
+    fst.results$Het_MA[i] = hexp2
+    fst.results$FST[i] = fst
 }
 
+### Write the output to the output file
+write.table(fst.results, file=output, quote=FALSE, col.names=TRUE, row.names=FALSE)
+
 ### Create a chromosome plot to look at the spatial distribution of Fst along the chromosome
-pdf(file=output, width=8.5, height=11)
-plot(fst.results$POS, fst.results$FST, xlab="Chromosomal Position (bp)", ylab=expression(F[ST]), pch=20, main="Spatial Distribution of FST", col="hotpink3")
+###pdf(file=output, width=11, height=8.5)
+###plot(fst.results$POS, fst.results$FST, xlab="Chromosomal Position (bp)", ylab=expression(F[ST]), pch=20, main="Spatial Distribution of FST", col="hotpink3")
 
 ### Add a line showing where mean Fst is:
-abline(h=mean(fst.results$FST))
+###abline(h=mean(fst.results$FST))
 
 ### Add another line to show where the 99th percentile is
-q <- quantile(fst.results$FST, probs=c(0.9,0.95,0.99))
-abline(h=q["99%"], lty=2)
+###q <- quantile(fst.results$FST, probs=c(0.9,0.95,0.99))
+###abline(h=q["99%"], lty=2)
 
 ### Finally, add a leged to the plot
-legend(1.25e07, 0.8, c("Mean", "99th Percentile"), lty=c(1,2), cex=0.7)
-dev.off()
+###legend(1.25e07, 0.8, c("Mean", "99th Percentile"), lty=c(1,2), cex=0.7)
+###dev.off()
 
   
