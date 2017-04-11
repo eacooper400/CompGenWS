@@ -10,13 +10,11 @@ module load gnu-parallel
 
 src=/home/ecoope4/CompGenWS
 
-cp $src/Sorghum_c1_r[1-8].phase.vcf /local_scratch/
-
 parallel -j 8 R --vanilla --slave \
-	 --args /local_scratch/{} {.}.ld.txt \
-	 <$src/12_LD_cluster.R ::: *phase.vcf
+	 --args {} {.}.ld.txt \
+	 <$src/12_LD_cluster.R ::: $src/Sorghum_c1_r1.phase.vcf $src/Sorghum_c1_r2.phase.vcf $src/Sorghum_c1_r3.phase.vcf $src/Sorghum_c1_r4.phase.vcf $src/Sorghum_c1_r5.phase.vcf
 
-cp /local_scratch/*ld.txt $src/
+
 
 echo "FINISH ----------------------------"
 
