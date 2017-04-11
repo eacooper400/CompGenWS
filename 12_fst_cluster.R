@@ -12,8 +12,8 @@ sampleVCF <- my.read.vcf(file=input, comment.char="", header=TRUE, stringsAsFact
 f.column=grep("FORMAT", colnames(sampleVCF))
 gen.start=f.column + 1
 gen.end=length(colnames(sampleVCF))
-pop1.index = grep("^FU_", colnames(sampleVCF)[gen.start:gen.end])
-pop2.index = grep("^MA_", colnames(sampleVCF)[gen.start:gen.end])
+pop1.index = grep("^FU", colnames(sampleVCF)[gen.start:gen.end])
+pop2.index = grep("^MA", colnames(sampleVCF)[gen.start:gen.end])
 
 fst.results <- data.frame(sampleVCF$CHROM, sampleVCF$POS, rep(0, nrow(sampleVCF)), rep(0, nrow(sampleVCF)), rep(0, nrow(sampleVCF)), rep(0, nrow(sampleVCF)))
 colnames(fst.results) <- c("CHR", "POS", "Het_T", "Het_FU", "Het_MA", "FST")
