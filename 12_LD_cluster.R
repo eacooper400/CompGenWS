@@ -8,11 +8,9 @@ output=args[2]
 
 sampleVCF <- my.read.vcf(file=input, comment.char="", header=TRUE, stringsAsFactors=FALSE)
 
-out.con=file(output, open="wt")
-sink(out.con, append=TRUE, type="output")
+LD.results=data.frame()
 
-header=paste(c("Distance","D","Rsquared"), sep="\t")
-cat(header, "\n")
+colnames(LD.results)=c("Distance","D","Rsquared")
 
 format.col <- grep("FORMAT", colnames(sampleVCF))
 
@@ -29,11 +27,9 @@ for (i in 1:(nrow(sampleVCF)-1)) {
         distance=as.numeric(row2[2])-as.numeric(row1[2])
         D=pAB-(pA*pB)
         rsq=(D**2)/(pA*(1-pA)*pB*(1-pB)) 
-        LD.results=paste(c(distance,D,rsq), sep="\t")
-        cat(LD.results, "\n")
+        LD.results=rbind(LD.results, c(distance,D,rsq))
     }
 }
-sink()
-close(out.con)
+write.table(LD.results, file=output, quote=FALSE, col.names=TRUE, row.names=FALSE)
 
 
