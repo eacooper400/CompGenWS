@@ -10,8 +10,6 @@ sampleVCF <- my.read.vcf(file=input, comment.char="", header=TRUE, stringsAsFact
 
 LD.results=data.frame()
 
-colnames(LD.results)=c("Distance","D","Rsquared")
-
 format.col <- grep("FORMAT", colnames(sampleVCF))
 
 for (i in 1:(nrow(sampleVCF)-1)) {
@@ -30,6 +28,7 @@ for (i in 1:(nrow(sampleVCF)-1)) {
         LD.results=rbind(LD.results, c(distance,D,rsq))
     }
 }
+colnames(LD.results)=c("Distance","D","Rsquared")
 write.table(LD.results, file=output, quote=FALSE, col.names=TRUE, row.names=FALSE)
 
 
